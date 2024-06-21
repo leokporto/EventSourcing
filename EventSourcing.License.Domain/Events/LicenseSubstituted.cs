@@ -1,10 +1,10 @@
 ﻿using EventSourcing.Core.Events;
 
-namespace EventSourcing.License.Domain.Events
+namespace EventSourcing.AnLicense.Domain.Events
 {
-	public class LicenseSubstituted : DomainEvent
+	public class LicenseSubstitutedEvent : DomainEvent
     {
-		public LicenseSubstituted(Guid licenseId, Guid substituteLicenseId) 
+		public LicenseSubstitutedEvent(Guid licenseId, Guid substituteLicenseId) : base()
 		{ 
 			LicenseId = licenseId;
 			SubstituteLicenseId = substituteLicenseId;

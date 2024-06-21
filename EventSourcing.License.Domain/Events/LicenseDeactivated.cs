@@ -1,10 +1,10 @@
 ﻿using EventSourcing.Core.Events;
 
-namespace EventSourcing.License.Domain.Events
+namespace EventSourcing.AnLicense.Domain.Events
 {
-	public class LicenseDeactivated : DomainEvent
+	public class LicenseDeactivatedEvent : DomainEvent
 	{
-		public LicenseDeactivated(Guid licenseId)
+		public LicenseDeactivatedEvent(Guid licenseId) : base()
 		{
 			LicenseId = licenseId;
 			DeactivatedAtUtcTicks = DateTime.UtcNow.Ticks;

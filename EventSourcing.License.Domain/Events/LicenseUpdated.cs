@@ -1,10 +1,10 @@
 ﻿using EventSourcing.Core.Events;
 
-namespace EventSourcing.License.Domain.Events
+namespace EventSourcing.AnLicense.Domain.Events
 {
-	public class LicenseUpdated : DomainEvent
+	public class LicenseUpdatedEvent : DomainEvent
 	{
-		public LicenseUpdated(Guid licenseId, string user)
+		public LicenseUpdatedEvent(Guid licenseId, string user) : base()
 		{
 			LicenseId = licenseId;
 			UpdatedAtUtcTicks = DateTime.UtcNow.Ticks;

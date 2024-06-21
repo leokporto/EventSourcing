@@ -4,6 +4,10 @@
 	{
 		abstract Guid StreamId { get; }
 
+		string StreamIdText { get; }
+
 		long CreatedAtUtcTicks { get; }
+
+		void SetStreamIdText(string streamId);
 	}
 }

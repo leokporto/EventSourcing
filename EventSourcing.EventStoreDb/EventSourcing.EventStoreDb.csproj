@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EventStore.Client.Grpc.Streams" Version="23.3.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EventSourcing.Core\EventSourcing.Core.csproj" />
+    <ProjectReference Include="..\EventSourcing.Infra\EventSourcing.Infra.csproj" />
+    <ProjectReference Include="..\EventSourcing.License.Application\EventSourcing.License.Application.csproj" />
+    <ProjectReference Include="..\EventSourcing.License.Domain\EventSourcing.AnLicense.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

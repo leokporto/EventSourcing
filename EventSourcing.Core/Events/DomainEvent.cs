@@ -11,5 +11,14 @@
 
 		public long CreatedAtUtcTicks { get; init; }
 
+		public string StreamIdText { get; private set; }
+
+		public void SetStreamIdText(string streamId)
+		{
+			if(!string.IsNullOrWhiteSpace(streamId))
+			{
+				StreamIdText = streamId;
+			}
+		}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using EventSourcing.Core.Events;
-using EventSourcing.License.Domain.Events;
+using EventSourcing.AnLicense.Domain.Events;
 
-namespace EventSourcing.License.Domain.Entities
+namespace EventSourcing.AnLicense.Domain.Entities
 {
 	public class License : IAgregateRoot
 	{
@@ -46,7 +46,7 @@ namespace EventSourcing.License.Domain.Entities
 		public bool IsActive { get; private set; }
 
 
-		public void Apply(LicenseCreated @event)
+		public void Apply(LicenseCreatedEvent @event)
 		{
 			LicenseId = @event.LicenseId;
 			CompanyName = @event.CompanyName;
@@ -59,7 +59,7 @@ namespace EventSourcing.License.Domain.Entities
 			
 	}
 
-		public void Apply(LicenseUpdated @event) 
+		public void Apply(LicenseUpdatedEvent @event) 
 		{ 
 			LastUpdatedBy = @event.UpdatedBy;
 			LastUpdatedAt = new DateTime(@event.UpdatedAtUtcTicks).ToLocalTime();
@@ -83,7 +83,7 @@ namespace EventSourcing.License.Domain.Entities
 			
 		}
 
-		public void Apply(LicenseActivated @event) 
+		public void Apply(LicenseActivatedEvent @event) 
 		{
 			LastUpdatedAt = new DateTime(@event.ActivatedAtUtcTicks).ToLocalTime();
 			LastUpdatedBy = @event.ActivatedBy;
@@ -93,7 +93,7 @@ namespace EventSourcing.License.Domain.Entities
 			IsActive = true;
 		}
 
-		public void Apply(LicenseDeactivated @event) 
+		public void Apply(LicenseDeactivatedEvent @event) 
 		{
 			LastUpdatedAt = new DateTime(@event.DeactivatedAtUtcTicks).ToLocalTime();
 			LastUpdatedBy = @event.DeactivatedBy;
@@ -101,7 +101,7 @@ namespace EventSourcing.License.Domain.Entities
 			IsActive = false;
 		}
 
-		public void Apply(LicenseSubstituted @event) 
+		public void Apply(LicenseSubstitutedEvent @event) 
 		{
 			LastUpdatedAt = new DateTime(@event.SubstitutedAtUtcTicks).ToLocalTime();
 			LastUpdatedBy = @event.SubstitutedBy;
@@ -114,19 +114,19 @@ namespace EventSourcing.License.Domain.Entities
 		{
 			switch(@event)
 			{
-				case LicenseCreated created:
+				case LicenseCreatedEvent created:
 					Apply(created);
 					break;
-				case LicenseUpdated updated:
+				case LicenseUpdatedEvent updated:
 					Apply(updated);
 					break;
-				case LicenseActivated activated:
+				case LicenseActivatedEvent activated:
 					Apply(activated);
 					break;
-				case LicenseDeactivated deactivated:
+				case LicenseDeactivatedEvent deactivated:
 					Apply(deactivated);
 					break;
-				case LicenseSubstituted substituted:
+				case LicenseSubstitutedEvent substituted:
 					Apply(substituted);
 					break;
 			}

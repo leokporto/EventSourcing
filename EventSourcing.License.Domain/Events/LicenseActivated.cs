@@ -1,10 +1,10 @@
 ﻿using EventSourcing.Core.Events;
 
-namespace EventSourcing.License.Domain.Events
+namespace EventSourcing.AnLicense.Domain.Events
 {
-	public class LicenseActivated : DomainEvent
+	public class LicenseActivatedEvent : DomainEvent
 	{
-		public LicenseActivated(Guid licenseId)
+		public LicenseActivatedEvent(Guid licenseId) : base()
 		{
 			LicenseId = licenseId;
 			ActivatedAtUtcTicks = DateTime.UtcNow.Ticks;
