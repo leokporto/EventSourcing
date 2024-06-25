@@ -5,6 +5,9 @@ using EventSourcing.Infra.Repositories;
 using EventSourcing.AnLicense.Domain.Events;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using EventSourcing.FakeData;
+using EventSourcing.Core.Events;
+using EventSourcing.License.Application;
 
 internal class Program
 {
@@ -14,8 +17,9 @@ internal class Program
 		await Host.CreateDefaultBuilder(args)
 			.ConfigureServices(services =>
 			{
-				services.AddScoped<IEventStore, EventStoreDb>(x => new EventStoreDb(connectionString));
+				services.AddScoped<IEventStore, EventStoreDb>(x => new EventStoreDb(connectionString));				
 				services.AddScoped<IEventRepository, LicenseEventRepository>();
+				services.AddScoped<LicenseService>();
 				services.AddHostedService<StartupHost>();
 			})
 			.Build().RunAsync();
@@ -33,34 +37,51 @@ internal class Program
 
 internal class StartupHost : IHostedService
 {
-	IEventRepository _eventRepository;
-	public StartupHost(IEventRepository eventRepo) 
+	LicenseService _licenseService;
+	public StartupHost(LicenseService licenseService) 
 	{
-		_eventRepository = eventRepo;
+		_licenseService = licenseService;
 	}
+
 	public async Task StartAsync(CancellationToken cancellationToken)
 	{
-		LicenseCreatedEvent	licenceCreated = new LicenseCreatedEvent()
+		Dictionary<Guid, SortedList<long,IDomainEvent>> allFakeEvents = LicenseFakes.GetLicenseEvents();
+
+		foreach(var evt in allFakeEvents)
 		{
-			CompanyName = "CELPE",
-			CreatedBy = "Leonardo",
-			Project = "Suspensao Action.Net",
-			ProjectKey = "24.023"
-		};
-		var createdResponse = await _eventRepository.CreateStreamAsync(licenceCreated);
-
-		var streamIdText = createdResponse.StreamIdText;
-
-		if (string.IsNullOrWhiteSpace(streamIdText))
-			return;
-
-		//TODO: Vreate other events
-		//TODO: Read events
+			string streamIdText = "";
+			foreach(var evtItem in evt.Value)
+			{
+				if (evtItem.Value is LicenseCreatedEvent created)
+				{
+					NonQueryResponse response = await _licenseService.CreateStreamAsync(created);
+					Console.WriteLine($"New Stream creation status: {created.StreamId} - {response.Success} - {response.Message}");
+					streamIdText = created.StreamIdText;
+				}
+				else 
+				{
+					evtItem.Value.SetStreamIdText(streamIdText);
+					NonQueryResponse response = await _licenseService.AppendAsync(evtItem.Value.StreamId, evtItem.Value);
+					Console.WriteLine($"New Event Appended to stream status: {evtItem.Value.StreamId} - {response.Success} - {response.Message}");
+				}
+				
+			}
+		}
+				
+		QueryResponse queryResponse = await _licenseService.ReadAsync(allFakeEvents.First().Key);
+		Console.WriteLine($"Read Stream status: {queryResponse.Success} - {queryResponse.Message}");
+		if(queryResponse.Success)
+		{
+			foreach(var evt in queryResponse.Data)
+			{
+				Console.WriteLine($"Event: {evt.StreamId} - {new DateTime(evt.CreatedAtUtcTicks)}");
+			}
+		}
 		//TODO: Read Agregate
 	}
 
 	public Task StopAsync(CancellationToken cancellationToken)
 	{
-		throw new NotImplementedException();
+		return Task.CompletedTask;
 	}
 }

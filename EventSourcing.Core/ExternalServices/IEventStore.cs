@@ -11,5 +11,9 @@ namespace EventSourcing.Core.ExternalServices
 		Task<IEnumerable<IDomainEvent>> ReadAsync(Guid streamId);
 
 		Task<IEnumerable<IDomainEvent>> ReadAsync(string streamIdText);
+
+		Task<bool> ExistsAsync(Guid streamId);
+
+		Task<bool> ExistsAsync(string streamIdText);
 	}
 }

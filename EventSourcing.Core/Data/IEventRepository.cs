@@ -10,5 +10,9 @@ namespace EventSourcing.Core.Data
 		Task<TEvent> AppendAsync<TEvent>(Guid streamId, TEvent @event) where TEvent : IDomainEvent;
 
 		Task<IEnumerable<IDomainEvent>> ReadAsync(Guid streamId);
+
+		Task<bool> ExistsAsync(Guid streamId);
+
+		Task<bool> ExistsAsync(string streamIdText);
 	}
 }

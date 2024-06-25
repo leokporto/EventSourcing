@@ -17,6 +17,7 @@
     <ProjectReference Include="..\EventSourcing.Infra\EventSourcing.Infra.csproj" />
     <ProjectReference Include="..\EventSourcing.License.Application\EventSourcing.License.Application.csproj" />
     <ProjectReference Include="..\EventSourcing.License.Domain\EventSourcing.AnLicense.Domain.csproj" />
+    <ProjectReference Include="..\EventSourcing.Shared\EventSourcing.FakeData\EventSourcing.FakeData.csproj" />
   </ItemGroup>
 
 </Project>

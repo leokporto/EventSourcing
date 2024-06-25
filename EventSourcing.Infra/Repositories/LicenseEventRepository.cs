@@ -1,11 +1,7 @@
 ﻿using EventSourcing.Core.Data;
 using EventSourcing.Core.Events;
 using EventSourcing.Core.ExternalServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace EventSourcing.Infra.Repositories
 {
@@ -27,9 +23,28 @@ namespace EventSourcing.Infra.Repositories
 			return await _eventStore.CreateAsync(@event);
 		}
 
-		public Task<IEnumerable<IDomainEvent>> ReadAsync(Guid streamId)
+		public async Task<bool> ExistsAsync(Guid streamId)
 		{
-			throw new NotImplementedException();
+			return await _eventStore.ExistsAsync(streamId.ToString());
+		}
+
+		public async Task<bool> ExistsAsync(string streamIdText)
+		{
+			if (string.IsNullOrEmpty(streamIdText))
+			{
+				return false;
+			}
+			return await _eventStore.ExistsAsync(streamIdText);
+		}
+
+		public async Task<IEnumerable<IDomainEvent>> ReadAsync(Guid streamId)
+		{
+			if(streamId == Guid.Empty)
+			{
+				return null;
+			}
+
+			return await _eventStore.ReadAsync(streamId);
 		}
 	}
 }

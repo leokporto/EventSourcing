@@ -33,6 +33,7 @@ namespace EventSourcing.EventStoreDb.Infra
 							new[] { eventData },
 					cancellationToken: cancellationToken
 				);
+
 			}
 			return @event;
 		}
@@ -44,15 +45,60 @@ namespace EventSourcing.EventStoreDb.Infra
 			return await AppendAsync(@event);
 		}
 
-		public Task<IEnumerable<IDomainEvent>> ReadAsync(Guid streamId)
+		public async Task<bool> ExistsAsync(Guid streamId)
 		{
-
-			throw new NotImplementedException();
+			return await ExistsAsync(streamId.ToString());
 		}
 
-		public Task<IEnumerable<IDomainEvent>> ReadAsync(string streamIdText)
+		public async Task<bool> ExistsAsync(string streamIdText)
 		{
-			throw new NotImplementedException();
+			CancellationToken cancellationToken = default;
+			
+
+
+			using (var client = new EventStoreClient(_settings))
+			{
+				var result = client.ReadStreamAsync(Direction.Forwards, streamIdText, StreamPosition.Start, 1, cancellationToken: cancellationToken);				
+
+				if (await result.ReadState == ReadState.Ok) 
+					return true;				
+			}
+
+			return false;
+		}
+
+		public async Task<IEnumerable<IDomainEvent>> ReadAsync(Guid streamId)
+		{
+			return await ReadAsync(streamId.ToString());
+		}
+
+		public async Task<IEnumerable<IDomainEvent>> ReadAsync(string streamIdText)
+		{
+			CancellationToken cancellationToken = default;
+
+			IEnumerable<IDomainEvent> domainEvents = new List<IDomainEvent>();
+
+			using (var client = new EventStoreClient(_settings))
+			{
+				var result = client.ReadStreamAsync(Direction.Forwards, streamIdText, StreamPosition.Start, cancellationToken: cancellationToken);
+
+				if (await result.ReadState == ReadState.Ok)
+				{
+
+					var events = await result.ToListAsync();
+
+					foreach (var resolvedEvent in events)
+					{
+						var deserializedEvent = JsonSerializer.Deserialize<IDomainEvent>(
+							resolvedEvent.Event.Data.ToArray()
+						);
+
+						domainEvents.Append(deserializedEvent);
+					}
+				}
+			}
+
+			return domainEvents;
 		}
 	}
 }

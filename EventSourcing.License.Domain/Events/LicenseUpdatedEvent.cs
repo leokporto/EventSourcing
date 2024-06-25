@@ -8,6 +8,7 @@ namespace EventSourcing.AnLicense.Domain.Events
 		{
 			LicenseId = licenseId;
 			UpdatedAtUtcTicks = DateTime.UtcNow.Ticks;
+			UpdatedBy = user;
 		}
 
 		public override Guid StreamId => LicenseId;
