@@ -1,6 +1,4 @@
-﻿using EventSourcing.Core.Events;
-
-namespace EventSourcing.AnLicense.Domain.Events
+﻿namespace EventSourcing.AnLicense.Domain.Events
 {
 	public class LicenseCreatedEvent : DomainEvent
 	{
@@ -21,5 +19,17 @@ namespace EventSourcing.AnLicense.Domain.Events
 		public string Project { get; init; }	
 
 		public string CreatedBy { get; init; }
+
+		public override string ToString()
+		{
+			string result = "--- LicenseCreatedEvent --- \n";
+			result += $"LicenseId: {LicenseId}\n";
+			result += $"CompanyName: {CompanyName}\n";
+			result += $"ProjectKey: {ProjectKey}\n";
+			result += $"Project: {Project}\n";
+			result += $"CreatedBy: {CreatedBy}\n";
+			result += $"CreatedAtUtcTicks: {CreatedAtUtcTicks}\n";
+			return result;
+		}
 	}
 }

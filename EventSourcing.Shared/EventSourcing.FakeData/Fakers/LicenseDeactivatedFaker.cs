@@ -7,7 +7,7 @@ namespace EventSourcing.FakeData.Fakers
 	{
 		public LicenseDeactivatedFaker(Guid streamId)
 		{
-			CustomInstantiator(f => new LicenseDeactivatedEvent(streamId));
+			RuleFor(ld => ld.LicenseId, streamId);
 			RuleFor(ld => ld.DeactivatedBy, x => $"{x.Name.FirstName()}.{x.Name.LastName()}");
 			RuleFor(ld => ld.Reason, x => x.Lorem.Sentence());
 		}

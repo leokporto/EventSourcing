@@ -1,6 +1,4 @@
-﻿using EventSourcing.Core.Events;
-
-namespace EventSourcing.AnLicense.Domain.Events
+﻿namespace EventSourcing.AnLicense.Domain.Events
 {
 	public class LicenseSubstitutedEvent : DomainEvent
     {

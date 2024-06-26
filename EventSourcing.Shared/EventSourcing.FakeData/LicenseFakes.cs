@@ -1,23 +1,26 @@
 ﻿using EventSourcing.AnLicense.Domain.Events;
-using EventSourcing.Core.Events;
 using EventSourcing.FakeData.Fakers;
 
 namespace EventSourcing.FakeData
 {
 	public static class LicenseFakes
 	{
-		public const int TOTAL_STREAMS = 5;
-
-		public static Dictionary<Guid, SortedList<long, IDomainEvent>> GetLicenseEvents() 
+		
+		public static Dictionary<Guid, SortedList<long, DomainEvent>> GetFakeLicenseEvents(int totalStreams) 
 		{
-			Dictionary<Guid, SortedList<long, IDomainEvent>> allStreams = new Dictionary<Guid, SortedList<long, IDomainEvent>>();
-			List<LicenseCreatedEvent> licenseCreatedEvents = new LicenseCreatedFaker().Generate(TOTAL_STREAMS);
+			if(totalStreams <=0) 
+			{
+				return new Dictionary<Guid, SortedList<long, DomainEvent>>();
+			}
+
+			Dictionary<Guid, SortedList<long, DomainEvent>> allStreams = new Dictionary<Guid, SortedList<long, DomainEvent>>();
+			List<LicenseCreatedEvent> licenseCreatedEvents = new LicenseCreatedFaker().Generate(totalStreams);
 			
 			Random rdmAddDeactivated = new Random();
 
 			foreach(var createdEvt in licenseCreatedEvents) 
 			{ 
-				SortedList<long, IDomainEvent> events = new SortedList<long, IDomainEvent>
+				SortedList<long, DomainEvent> events = new SortedList<long, DomainEvent>
 				{
 					{ createdEvt.CreatedAtUtcTicks, createdEvt }
 				};

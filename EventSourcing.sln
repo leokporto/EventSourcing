@@ -25,14 +25,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSourcing.EventStoreDb"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{B834AE67-0A7F-4F91-B1DA-24AAF2A2D719}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventStoreDb", "EventStoreDb", "{76608872-75C5-401D-9637-3253380305FB}"
-	ProjectSection(SolutionItems) = preProject
-		..\DockerFiles\EventStoreDb\docker-compose.yml = ..\DockerFiles\EventStoreDb\docker-compose.yml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventSourcing.Shared", "EventSourcing.Shared", "{C4C42075-CA24-4FFB-9FAD-7A7ABEDE9A68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSourcing.FakeData", "EventSourcing.Shared\EventSourcing.FakeData\EventSourcing.FakeData.csproj", "{699C1169-4829-47D6-BB9F-E233058738CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSourcing.FakeData", "EventSourcing.Shared\EventSourcing.FakeData\EventSourcing.FakeData.csproj", "{699C1169-4829-47D6-BB9F-E233058738CF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventStoreDb", "EventStoreDb", "{2E0D5A43-8FEA-4FE6-8DDE-4E8AFC087EBD}"
+	ProjectSection(SolutionItems) = preProject
+		EventStoreDb\docker-compose.yml = EventStoreDb\docker-compose.yml
+		EventStoreDb\README.MD = EventStoreDb\README.MD
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,8 +75,8 @@ Global
 		{1C8EDF52-63AC-4439-83A1-28A6176DB3ED} = {B4CD9139-1365-4216-A9E6-BE41327E8FEC}
 		{F5F3CC5D-0588-4215-9414-64D7427E4C4D} = {08900534-491E-460B-9900-77F19398FEB2}
 		{025D6B49-5A8C-4F0A-9CFC-E61976CE9A99} = {F681DC49-1307-4F4A-BB86-BFCDC459C131}
-		{76608872-75C5-401D-9637-3253380305FB} = {B834AE67-0A7F-4F91-B1DA-24AAF2A2D719}
 		{699C1169-4829-47D6-BB9F-E233058738CF} = {C4C42075-CA24-4FFB-9FAD-7A7ABEDE9A68}
+		{2E0D5A43-8FEA-4FE6-8DDE-4E8AFC087EBD} = {B834AE67-0A7F-4F91-B1DA-24AAF2A2D719}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {37A7ED78-B1E7-415F-B2AF-D1706FF6B981}

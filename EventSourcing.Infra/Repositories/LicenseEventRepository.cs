@@ -1,7 +1,6 @@
 ﻿using EventSourcing.Core.Data;
 using EventSourcing.Core.Events;
 using EventSourcing.Core.ExternalServices;
-using System.IO;
 
 namespace EventSourcing.Infra.Repositories
 {
@@ -13,10 +12,10 @@ namespace EventSourcing.Infra.Repositories
 			_eventStore = eventStore;
 		}
 
-		public async Task<TEvent> AppendAsync<TEvent>(Guid streamId, TEvent @event) where TEvent : IDomainEvent
+		public async Task<TEvent> AppendAsync<TEvent>(TEvent @event) where TEvent : IDomainEvent
 		{
 			return await _eventStore.AppendAsync(@event);
-		}
+		}		
 
 		public async Task<TEvent> CreateStreamAsync<TEvent>(TEvent @event) where TEvent : IDomainEvent
 		{
@@ -45,6 +44,16 @@ namespace EventSourcing.Infra.Repositories
 			}
 
 			return await _eventStore.ReadAsync(streamId);
+		}
+
+		public async Task<IEnumerable<IDomainEvent>> ReadAsync(string streamIdText)
+		{
+			if(string.IsNullOrWhiteSpace(streamIdText))
+			{
+				return null;
+			}
+
+			return await _eventStore.ReadAsync(streamIdText);
 		}
 	}
 }

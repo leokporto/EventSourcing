@@ -1,5 +1,4 @@
-﻿using EventSourcing.Core.Entities;
-using EventSourcing.Core.Events;
+﻿using EventSourcing.Core.Events;
 
 namespace EventSourcing.Core.Data
 {
@@ -7,9 +6,11 @@ namespace EventSourcing.Core.Data
 	{
 		Task<TEvent> CreateStreamAsync<TEvent>(TEvent @event) where TEvent : IDomainEvent;
 
-		Task<TEvent> AppendAsync<TEvent>(Guid streamId, TEvent @event) where TEvent : IDomainEvent;
+		Task<TEvent> AppendAsync<TEvent>(TEvent @event) where TEvent : IDomainEvent;
 
 		Task<IEnumerable<IDomainEvent>> ReadAsync(Guid streamId);
+
+		Task<IEnumerable<IDomainEvent>> ReadAsync(string streamIdText);
 
 		Task<bool> ExistsAsync(Guid streamId);
 

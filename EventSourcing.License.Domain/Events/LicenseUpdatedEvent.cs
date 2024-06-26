@@ -1,19 +1,15 @@
-﻿using EventSourcing.Core.Events;
-
-namespace EventSourcing.AnLicense.Domain.Events
+﻿namespace EventSourcing.AnLicense.Domain.Events
 {
 	public class LicenseUpdatedEvent : DomainEvent
 	{
-		public LicenseUpdatedEvent(Guid licenseId, string user) : base()
-		{
-			LicenseId = licenseId;
-			UpdatedAtUtcTicks = DateTime.UtcNow.Ticks;
-			UpdatedBy = user;
+		public LicenseUpdatedEvent() : base()
+		{			
+			UpdatedAtUtcTicks = DateTime.UtcNow.Ticks;			
 		}
 
 		public override Guid StreamId => LicenseId;
 
-		public Guid LicenseId { get; }
+		public Guid LicenseId { get; init; }
 
 		public long UpdatedAtUtcTicks { get; }
 
@@ -34,5 +30,23 @@ namespace EventSourcing.AnLicense.Domain.Events
 		public string? Country { get; set; }
 
 		public string? ProductVersion { get; init; }
+
+		
+		public override string ToString()
+		{
+			string result = "--- LicenseUpdatedEvent --- \n";
+			result += $"LicenseId: {LicenseId}\n";
+			result += $"UpdatedBy: {UpdatedBy}\n";
+			result += $"UpdatedAtUtcTicks: {UpdatedAtUtcTicks}\n";
+			result += $"MachineName: {MachineName}\n";
+			result += $"City: {City}\n";
+			result += $"State: {State}\n";
+			result += $"Country: {Country}\n";
+			result += $"ProductVersion: {ProductVersion}\n";
+			result += $"Project: {Project}\n";
+			result += $"ProjectKey: {ProjectKey}\n";
+			result += $"CompanyName: {CompanyName}\n";
+			return result;
+		}
 	}
 }

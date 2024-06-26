@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EventSourcing.Core\EventSourcing.Core.csproj" />
+    <ProjectReference Include="..\EventSourcing.License.Domain\EventSourcing.AnLicense.Domain.csproj" />
   </ItemGroup>
 
 </Project>

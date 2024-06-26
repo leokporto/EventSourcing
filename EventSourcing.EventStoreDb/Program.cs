@@ -1,13 +1,13 @@
-﻿using EventSourcing.Core.Data;
+﻿using EventSourcing.AnLicense.Domain.Entities;
+using EventSourcing.AnLicense.Domain.Events;
+using EventSourcing.Core.Data;
 using EventSourcing.Core.ExternalServices;
 using EventSourcing.EventStoreDb.Infra;
+using EventSourcing.FakeData;
 using EventSourcing.Infra.Repositories;
-using EventSourcing.AnLicense.Domain.Events;
+using EventSourcing.License.Application;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using EventSourcing.FakeData;
-using EventSourcing.Core.Events;
-using EventSourcing.License.Application;
 
 internal class Program
 {
@@ -45,39 +45,163 @@ internal class StartupHost : IHostedService
 
 	public async Task StartAsync(CancellationToken cancellationToken)
 	{
-		Dictionary<Guid, SortedList<long,IDomainEvent>> allFakeEvents = LicenseFakes.GetLicenseEvents();
 
-		foreach(var evt in allFakeEvents)
+		while (true)
 		{
-			string streamIdText = "";
-			foreach(var evtItem in evt.Value)
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine("Choose option: ");
+			Console.WriteLine("1 - Create Fake Streams");
+			Console.WriteLine("2 - Read Streams");
+			Console.WriteLine("3 - Read Agregate \n");
+			Console.ForegroundColor = ConsoleColor.White;
+
+			string? selectedOption = Console.ReadLine();
+			switch (selectedOption)
 			{
-				if (evtItem.Value is LicenseCreatedEvent created)
+				case "1":
+					Console.WriteLine("How many fake streams do you want to create?");
+					string? totalStreamsInput = Console.ReadLine();
+					if (string.IsNullOrWhiteSpace(totalStreamsInput))
+					{
+						LogError("Invalid number of streams");
+						break;
+					}
+
+					int totalStreams = 0;
+					if (!int.TryParse(totalStreamsInput, out totalStreams))
+					{
+						LogError("Invalid number of streams");
+						break;
+					}
+
+					await CreateFakeStreams(totalStreams);
+
+					break;
+
+				case "2":
+					string streamIdText = GetStreamId();
+
+					if (!string.IsNullOrWhiteSpace(streamIdText))
+					{
+						await ReadStream(streamIdText);
+					}
+
+					break;
+
+				case "3":
+					string streamIdText2 = GetStreamId();
+					if (!string.IsNullOrWhiteSpace(streamIdText2))
+					{
+						await ReadAgregate(streamIdText2);
+					}
+
+					break;
+
+				default:					
+					LogError("Invalid option");
+					break;
+			}
+
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine("Do you want to continue? (Y/N)");
+			Console.ForegroundColor = ConsoleColor.White;
+
+			string? continueOption = Console.ReadLine();
+			if (continueOption?.ToLower() != "y")
+			{
+				break;
+			}
+		}
+
+		
+	}
+
+	private static string GetStreamId()
+	{
+		Console.WriteLine("Enter StreamId: ");
+		string? streamIdText = Console.ReadLine();
+		if (string.IsNullOrWhiteSpace(streamIdText))
+		{
+			LogError("Invalid StreamId");
+		}
+
+		return streamIdText;
+	}
+
+	private async Task ReadAgregate(string streamIdText)
+	{
+		QueryResponse queryResponse = await _licenseService.ReadAsync(streamIdText);
+		LogResponse($"ReadAgregate: ", queryResponse);
+		if (queryResponse.Success)
+		{
+			SoftLicense agregateLicense = new SoftLicense();
+			foreach (var evt in queryResponse.Data)
+			{
+				agregateLicense.Apply(evt);
+			}
+			Console.WriteLine(agregateLicense);
+		}
+	}
+
+	private async Task ReadStream(string streamIdText)
+	{
+		QueryResponse queryResponse = await _licenseService.ReadAsync(streamIdText);
+		LogResponse($"Read Stream status: ", queryResponse);
+		if (queryResponse.Success)
+		{
+			foreach (var evt in queryResponse.Data)
+			{
+				Console.WriteLine(evt);
+			}
+		}
+	}
+
+	private async Task CreateFakeStreams(int totalStreams)
+	{
+		string streamIdText;
+		Dictionary<Guid, SortedList<long, DomainEvent>> allFakeEvents;
+		allFakeEvents = LicenseFakes.GetFakeLicenseEvents(totalStreams);
+		streamIdText = "";
+		foreach (var evt in allFakeEvents)
+		{
+			streamIdText = "";
+			foreach (var evtItem in evt.Value)
+			{
+				if (evtItem.Value is LicenseCreatedEvent)
 				{
-					NonQueryResponse response = await _licenseService.CreateStreamAsync(created);
-					Console.WriteLine($"New Stream creation status: {created.StreamId} - {response.Success} - {response.Message}");
-					streamIdText = created.StreamIdText;
+					NonQueryResponse response = await _licenseService.CreateStreamAsync(evtItem.Value);
+					LogResponse($"New stream created: {evtItem.Value.StreamIdText}", response);
+					streamIdText = evtItem.Value.StreamIdText;
 				}
-				else 
+				else
 				{
 					evtItem.Value.SetStreamIdText(streamIdText);
-					NonQueryResponse response = await _licenseService.AppendAsync(evtItem.Value.StreamId, evtItem.Value);
-					Console.WriteLine($"New Event Appended to stream status: {evtItem.Value.StreamId} - {response.Success} - {response.Message}");
+					NonQueryResponse response = await _licenseService.AppendAsync(evtItem.Value);
+					LogResponse($"New Event Appended: {evtItem.Value.StreamIdText}", response);
 				}
-				
+
 			}
 		}
-				
-		QueryResponse queryResponse = await _licenseService.ReadAsync(allFakeEvents.First().Key);
-		Console.WriteLine($"Read Stream status: {queryResponse.Success} - {queryResponse.Message}");
-		if(queryResponse.Success)
+	}
+
+	private void LogResponse(string prefix, BaseServiceResponse response)
+	{
+		string message = response.Message;
+		if (response.Success)
 		{
-			foreach(var evt in queryResponse.Data)
-			{
-				Console.WriteLine($"Event: {evt.StreamId} - {new DateTime(evt.CreatedAtUtcTicks)}");
-			}
+			Console.WriteLine($"{prefix} - {response.Success}");
 		}
-		//TODO: Read Agregate
+		else
+		{
+			Console.WriteLine($"{prefix} - {response.Success} - {response.Message}");
+		}
+	}
+
+	private static void LogError(string errorMessage)
+	{
+		Console.ForegroundColor = ConsoleColor.Red;
+		Console.WriteLine(errorMessage);
+		Console.ForegroundColor = ConsoleColor.White;
 	}
 
 	public Task StopAsync(CancellationToken cancellationToken)
