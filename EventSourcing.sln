@@ -31,8 +31,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSourcing.FakeData", "E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventStoreDb", "EventStoreDb", "{2E0D5A43-8FEA-4FE6-8DDE-4E8AFC087EBD}"
 	ProjectSection(SolutionItems) = preProject
-		EventStoreDb\docker-compose.yml = EventStoreDb\docker-compose.yml
-		EventStoreDb\README.MD = EventStoreDb\README.MD
+		Docker\EventStoreDb\docker-compose.yml = Docker\EventStoreDb\docker-compose.yml
+		Docker\EventStoreDb\README.MD = Docker\EventStoreDb\README.MD
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MongoDb", "MongoDb", "{D36BBDFE-A861-40CD-819C-62739E035B66}"
+	ProjectSection(SolutionItems) = preProject
+		Docker\MongoDb\docker-compose.yml = Docker\MongoDb\docker-compose.yml
 	EndProjectSection
 EndProject
 Global
@@ -77,6 +82,7 @@ Global
 		{025D6B49-5A8C-4F0A-9CFC-E61976CE9A99} = {F681DC49-1307-4F4A-BB86-BFCDC459C131}
 		{699C1169-4829-47D6-BB9F-E233058738CF} = {C4C42075-CA24-4FFB-9FAD-7A7ABEDE9A68}
 		{2E0D5A43-8FEA-4FE6-8DDE-4E8AFC087EBD} = {B834AE67-0A7F-4F91-B1DA-24AAF2A2D719}
+		{D36BBDFE-A861-40CD-819C-62739E035B66} = {B834AE67-0A7F-4F91-B1DA-24AAF2A2D719}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {37A7ED78-B1E7-415F-B2AF-D1706FF6B981}
