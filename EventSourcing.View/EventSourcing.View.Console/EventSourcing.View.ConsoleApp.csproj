@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>df61b84a-6578-4d01-ab76-4bf1ae5f9da6</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\EventSourcing.Core\EventSourcing.Core.csproj" />
+    <ProjectReference Include="..\..\EventSourcing.DynamoDb\EventSourcing.DynamoDb.csproj" />
+    <ProjectReference Include="..\..\EventSourcing.EventStoreDb\EventSourcing.EventStoreDb.csproj" />
+    <ProjectReference Include="..\..\EventSourcing.Infra\EventSourcing.Infra.csproj" />
+    <ProjectReference Include="..\..\EventSourcing.License.Application\EventSourcing.License.Application.csproj" />
+    <ProjectReference Include="..\..\EventSourcing.Shared\EventSourcing.FakeData\EventSourcing.FakeData.csproj" />
+  </ItemGroup>
+
+</Project>

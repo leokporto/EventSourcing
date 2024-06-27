@@ -8,16 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EventStore.Client.Grpc.Streams" Version="23.3.3" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.303.26" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-    <PackageReference Include="System.Text.Json" Version="8.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EventSourcing.Core\EventSourcing.Core.csproj" />
     <ProjectReference Include="..\EventSourcing.Infra\EventSourcing.Infra.csproj" />
     <ProjectReference Include="..\EventSourcing.License.Application\EventSourcing.License.Application.csproj" />
-    <ProjectReference Include="..\EventSourcing.License.Domain\EventSourcing.AnLicense.Domain.csproj" />
     <ProjectReference Include="..\EventSourcing.Shared\EventSourcing.FakeData\EventSourcing.FakeData.csproj" />
   </ItemGroup>
 

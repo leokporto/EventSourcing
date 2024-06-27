@@ -22,6 +22,12 @@ namespace EventSourcing.AnLicense.Domain.Events
 
 		public string StreamIdText { get; private set; }
 
+		[JsonPropertyName("pk")]
+		public string Pk => StreamId.ToString();
+
+		[JsonPropertyName("sk")]
+		public long  Sk => CreatedAtUtcTicks;
+
 		public void SetStreamIdText(string streamId)
 		{
 			if (!string.IsNullOrWhiteSpace(streamId))

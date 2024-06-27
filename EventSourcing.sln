@@ -40,6 +40,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MongoDb", "MongoDb", "{D36B
 		Docker\MongoDb\docker-compose.yml = Docker\MongoDb\docker-compose.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventSourcing.DynamoDb", "EventSourcing.DynamoDb", "{54480B13-9A37-4226-B35E-FB103FA559F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSourcing.DynamoDb", "EventSourcing.DynamoDb\EventSourcing.DynamoDb.csproj", "{15181BE3-9DB5-43B6-AADD-90EB09F99668}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventSourcing.View", "EventSourcing.View", "{B8F066AC-51D5-4F16-982D-13ADE46E1EF7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventSourcing.View.Console", "EventSourcing.View.Console", "{56DFDEC4-BE6A-4630-B3EE-594AB4F8E9B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSourcing.View.ConsoleApp", "EventSourcing.View\EventSourcing.View.Console\EventSourcing.View.ConsoleApp.csproj", "{12D68F18-F59F-4765-8A86-C78803F44B29}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +80,14 @@ Global
 		{699C1169-4829-47D6-BB9F-E233058738CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{699C1169-4829-47D6-BB9F-E233058738CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{699C1169-4829-47D6-BB9F-E233058738CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15181BE3-9DB5-43B6-AADD-90EB09F99668}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15181BE3-9DB5-43B6-AADD-90EB09F99668}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15181BE3-9DB5-43B6-AADD-90EB09F99668}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15181BE3-9DB5-43B6-AADD-90EB09F99668}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12D68F18-F59F-4765-8A86-C78803F44B29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12D68F18-F59F-4765-8A86-C78803F44B29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12D68F18-F59F-4765-8A86-C78803F44B29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12D68F18-F59F-4765-8A86-C78803F44B29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +101,9 @@ Global
 		{699C1169-4829-47D6-BB9F-E233058738CF} = {C4C42075-CA24-4FFB-9FAD-7A7ABEDE9A68}
 		{2E0D5A43-8FEA-4FE6-8DDE-4E8AFC087EBD} = {B834AE67-0A7F-4F91-B1DA-24AAF2A2D719}
 		{D36BBDFE-A861-40CD-819C-62739E035B66} = {B834AE67-0A7F-4F91-B1DA-24AAF2A2D719}
+		{15181BE3-9DB5-43B6-AADD-90EB09F99668} = {54480B13-9A37-4226-B35E-FB103FA559F3}
+		{56DFDEC4-BE6A-4630-B3EE-594AB4F8E9B7} = {B8F066AC-51D5-4F16-982D-13ADE46E1EF7}
+		{12D68F18-F59F-4765-8A86-C78803F44B29} = {56DFDEC4-BE6A-4630-B3EE-594AB4F8E9B7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {37A7ED78-B1E7-415F-B2AF-D1706FF6B981}
