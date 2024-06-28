@@ -1,10 +1,15 @@
 ﻿using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DocumentModel;
+using Amazon.DynamoDBv2.Model;
+using EventSourcing.AnLicense.Domain.Events;
 using EventSourcing.Core.Events;
 using EventSourcing.Core.ExternalServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace EventSourcing.DynamoDb.Infra
@@ -14,18 +19,31 @@ namespace EventSourcing.DynamoDb.Infra
 		public readonly IAmazonDynamoDB _dynamoDbClient = new AmazonDynamoDBClient(Amazon.RegionEndpoint.SAEast1);
 		private const string TABLE_NAME = "TstEvtSrc";
 
-		public DynamoDbEventStore(string? connectionString)
+		public DynamoDbEventStore()
 		{
 		}
 
-		public Task<TEvent> AppendAsync<TEvent>(TEvent @event) where TEvent : IDomainEvent
+		public async Task<TEvent> AppendAsync<TEvent>(TEvent @event) where TEvent : IDomainEvent
 		{
-			throw new NotImplementedException();
+			var eventAsJson = JsonSerializer.Serialize<IDomainEvent>(@event);
+			var itemAsDoc = Document.FromJson(eventAsJson);
+			var itemAttributes= itemAsDoc.ToAttributeMap();
+
+			var createItemRequest = new PutItemRequest
+			{
+				TableName = TABLE_NAME,
+				Item = itemAttributes
+			};
+
+			
+			await _dynamoDbClient.PutItemAsync(createItemRequest);
+
+			return @event;
 		}
 
-		public Task<TEvent> CreateAsync<TEvent>(TEvent @event) where TEvent : IDomainEvent
+		public async Task<TEvent> CreateAsync<TEvent>(TEvent @event) where TEvent : IDomainEvent
 		{
-			throw new NotImplementedException();
+			return await AppendAsync(@event);
 		}
 
 		public Task<bool> ExistsAsync(Guid streamId)

@@ -19,6 +19,7 @@
     <ProjectReference Include="..\..\EventSourcing.EventStoreDb\EventSourcing.EventStoreDb.csproj" />
     <ProjectReference Include="..\..\EventSourcing.Infra\EventSourcing.Infra.csproj" />
     <ProjectReference Include="..\..\EventSourcing.License.Application\EventSourcing.License.Application.csproj" />
+    <ProjectReference Include="..\..\EventSourcing.MartenDb\EventSourcing.MartenDb.csproj" />
     <ProjectReference Include="..\..\EventSourcing.Shared\EventSourcing.FakeData\EventSourcing.FakeData.csproj" />
   </ItemGroup>
 

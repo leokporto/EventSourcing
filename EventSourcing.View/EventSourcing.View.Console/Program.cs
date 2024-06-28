@@ -5,10 +5,10 @@ using EventSourcing.Core.ExternalServices;
 using EventSourcing.FakeData;
 using EventSourcing.Infra.Repositories;
 using EventSourcing.License.Application;
+using EventSourcing.MartenDb.Infra;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Configuration;
-using EventSourcing.DynamoDb.Infra;
 
 namespace EventSourcing.View.ConsoleApp
 {
@@ -25,13 +25,14 @@ namespace EventSourcing.View.ConsoleApp
 			var builder = Host.CreateDefaultBuilder(args);			
 			
 			//string? connectionString = config.GetConnectionString("EventStoreDb");
-			string? connectionString = config.GetConnectionString("DynamoDb");
+			string? connectionString = config.GetConnectionString("MartenDb");
 			
 			builder.ConfigureServices(services =>
 				{
 
 					//services.AddScoped<IEventStore, EventStoreDb.Infra.EventStoreDb>(x => new EventStoreDb.Infra.EventStoreDb(connectionString));
-					services.AddScoped<IEventStore, DynamoDbEventStore>(x => new DynamoDbEventStore(connectionString));
+					services.AddScoped<IEventStore, MartenDbEventStore>(x => new MartenDbEventStore(connectionString));
+					//services.AddScoped<IEventStore, DynamoDbEventStore>();
 					services.AddScoped<IEventRepository, LicenseEventRepository>();
 					services.AddScoped<LicenseService>();
 					services.AddHostedService<StartupHost>();
@@ -186,14 +187,13 @@ namespace EventSourcing.View.ConsoleApp
 					if (evtItem.Value is LicenseCreatedEvent)
 					{
 						NonQueryResponse response = await _licenseService.CreateStreamAsync(evtItem.Value);
-						LogResponse($"New stream created: {evtItem.Value.StreamIdText}", response);
-						streamIdText = evtItem.Value.StreamIdText;
+						LogResponse($"New stream created: {evtItem.Value.StreamId}", response);						
 					}
 					else
 					{
 						evtItem.Value.SetStreamIdText(streamIdText);
 						NonQueryResponse response = await _licenseService.AppendAsync(evtItem.Value);
-						LogResponse($"New Event Appended: {evtItem.Value.StreamIdText}", response);
+						LogResponse($"New Event Appended: {evtItem.Value.StreamId}", response);
 					}
 
 				}
