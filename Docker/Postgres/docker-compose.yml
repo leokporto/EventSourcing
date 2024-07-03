@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  postgre-db:    
+    container_name: "${COMPOSE_PROJECT_NAME}PgSql"
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: "Pa55w@rd"
+    ports:
+      - "5432:5432"
+    networks:
+      - docker-postgres-network
+
+  pgadmin-compose:
+    container_name: "${COMPOSE_PROJECT_NAME}PgAdmin"
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@email.com"
+      PGADMIN_DEFAULT_PASSWORD: "Pa55w@rd"
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgre-db
+    networks:
+      - docker-postgres-network
+
+networks:
+  docker-postgres-network:
+    driver: bridge
+
+
+
+
+
+
+
